@@ -4,60 +4,85 @@ using UnityEngine;
 
 public class CameraMove : MonoBehaviour
 {
-    public float speed = 10f;
+    private readonly float MoveSpeed = 1f;
+    private readonly float MinZoom = 3f;
+    private readonly float MaxZoom = 9f;
+    private readonly float MinY = -39f;
+    private readonly float MaxY = 1f;
+    private float MouseStartY;
+    private float MouseMoveY;
 
-    private Vector3 MouseStart, MouseMove;
-    private Vector3 derp;
-
-    // Start is called before the first frame update
+    /// <summary>
+    /// Start is called before the first frame update
+    /// </summary>
     void Start()
     {
 
     }
 
-    // Update is called once per frame
+    /// <summary>
+    /// Update is called once per frame
+    /// </summary>
     void Update()
+    {
+        CheckArrowMovement();
+        CheckMouseWheelZoom();
+        CheckDrag();
+    }
+
+    /// <summary>
+    /// Moves the camera if any arrow is pressed
+    /// </summary>
+    private void CheckArrowMovement()
     {
         if (Input.GetKey(KeyCode.DownArrow))
         {
-            transform.position = new Vector3(transform.position.x, transform.position.y - speed, transform.position.z);
+            transform.position = new Vector3(transform.position.x, transform.position.y - MoveSpeed, transform.position.z);
         }
+
         if (Input.GetKey(KeyCode.UpArrow))
         {
-            transform.position = new Vector3(transform.position.x, transform.position.y + speed, transform.position.z);
+            transform.position = new Vector3(transform.position.x, transform.position.y + MoveSpeed, transform.position.z);
         }
-        if (Input.GetKey(KeyCode.RightArrow))
-        {
-            transform.position = new Vector3(transform.position.x + speed, transform.position.y, transform.position.z);
-        }
-        if (Input.GetKey(KeyCode.LeftArrow))
-        {
-            transform.position = new Vector3(transform.position.x - speed, transform.position.y, transform.position.z);
-        }
+    }
 
-        Camera.main.orthographicSize -= Input.GetAxis("Mouse ScrollWheel") * 10;
+    /// <summary>
+    /// Zooms in or out if the wheel of the mouse is used
+    /// </summary>
+    private void CheckMouseWheelZoom()
+    {
+        float mouseWheel = Input.GetAxis("Mouse ScrollWheel");
 
-        /*
+        if (mouseWheel > 0)
+        {
+            if (Camera.main.orthographicSize > MinZoom)
+            {
+                Camera.main.orthographicSize--;
+            }
+        }
+        else if (mouseWheel < 0)
+        {
+            if (Camera.main.orthographicSize < MaxZoom)
+            {
+                Camera.main.orthographicSize++;
+            }
+        }
+    }
+
+    /// <summary>
+    /// Check if the player is dragging the map to move the camera
+    /// </summary>
+    private void CheckDrag()
+    {
         if (Input.GetMouseButtonDown(0))
         {
-            //create a variable to hold the mouse position just because it looks clearer and easier to read
-            Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            //now we create a second vector3 as we don't want the sprite z axis to match the mouse position only on X and Y we want to stay on the same z axis
-            Vector3 position = new Vector3(mousePosition.x, mousePosition.y, transform.position.z);
-            //set its position equal to the vector3 we just created
-            transform.position = position;
-        }
-        */
-
-        if (Input.GetMouseButtonDown(0))
-        {
-            MouseStart = new Vector3(Input.mousePosition.x, Input.mousePosition.y, transform.position.z);
+            MouseStartY = Input.mousePosition.y;
         }
         else if (Input.GetMouseButton(0))
         {
-            MouseMove = new Vector3(Input.mousePosition.x - MouseStart.x, Input.mousePosition.y - MouseStart.y, transform.position.z);
-            MouseStart = new Vector3(Input.mousePosition.x, Input.mousePosition.y, transform.position.z);
-            transform.position = new Vector3(transform.position.x + MouseMove.x * Time.deltaTime * transform.position.z, transform.position.y + MouseMove.y * Time.deltaTime * transform.position.z, transform.position.z);
+            MouseMoveY = Input.mousePosition.y - MouseStartY;
+            MouseStartY = Input.mousePosition.y;
+            transform.position = new Vector3(transform.position.x, transform.position.y + MouseMoveY * transform.position.z * 0.005f, transform.position.z);
         }
     }
 
