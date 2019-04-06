@@ -6,6 +6,11 @@ public class GameManager : Singleton<GameManager>
 {
     public TowerBtn ClickedBtn { get; private set; }
 
+    [SerializeField]
+    private GameObject pauseMenu;
+
+    public TileScript HoveredTile { get; set; }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -22,7 +27,7 @@ public class GameManager : Singleton<GameManager>
     {
         if (ClickedBtn == towerBtn)
         {
-            DeactivateBtn();
+            DropTower();
         }
         else
         {
@@ -35,21 +40,44 @@ public class GameManager : Singleton<GameManager>
     {
         if (!Input.GetKey(KeyCode.LeftShift))
         {
-            DeactivateBtn();
+            DropTower();
         }
     }
 
-    private void DeactivateBtn()
+    private void DropTower()
     {
+        HoveredTile.ColorTile(Color.white);
         ClickedBtn = null;
         Hover.Instance.Deactivate();
     }
 
     private void HandleEscape()
     {
+
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            DeactivateBtn();
+            if (ClickedBtn == null)
+            {
+                Pause();
+            }
+            else
+            {
+                DropTower();
+            }
+        }
+    }
+
+    private void Pause()
+    {
+        pauseMenu.SetActive(!pauseMenu.activeSelf);
+
+        if (pauseMenu.activeSelf)
+        {
+            Time.timeScale = 0;
+        }
+        else
+        {
+            Time.timeScale = 1;
         }
     }
 }

@@ -56,6 +56,8 @@ public class TileScript : MonoBehaviour
     {
         if (!EventSystem.current.IsPointerOverGameObject() && GameManager.Instance.ClickedBtn != null)
         {
+            GameManager.Instance.HoveredTile = this;
+
             if (CanBuild)
             {
                 ColorTile(OkColor);
@@ -95,7 +97,7 @@ public class TileScript : MonoBehaviour
         }
     }
 
-    private void ColorTile(Color color)
+    public void ColorTile(Color color)
     {
         spriteRenderer.color = color;
     }
