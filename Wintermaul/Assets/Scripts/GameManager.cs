@@ -1,13 +1,22 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : Singleton<GameManager>
 {
     public TowerBtn ClickedBtn { get; private set; }
 
     [SerializeField]
+    private GameObject inGameMenu;
+
+    [SerializeField]
     private GameObject pauseMenu;
+
+    [SerializeField]
+    private GameObject optionsMenu;
+
+
 
     public TileScript HoveredTile { get; set; }
 
@@ -58,7 +67,7 @@ public class GameManager : Singleton<GameManager>
         {
             if (ClickedBtn == null)
             {
-                Pause();
+                ShowInGameMenu();
             }
             else
             {
@@ -67,11 +76,13 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
-    private void Pause()
+    public void ShowInGameMenu()
     {
-        pauseMenu.SetActive(!pauseMenu.activeSelf);
+        inGameMenu.SetActive(!inGameMenu.activeSelf);
 
-        if (pauseMenu.activeSelf)
+        ShowPauseMenu();
+
+        if (inGameMenu.activeSelf)
         {
             Time.timeScale = 0;
         }
@@ -79,5 +90,28 @@ public class GameManager : Singleton<GameManager>
         {
             Time.timeScale = 1;
         }
+    }
+
+    public void QuitGame()
+    {
+        Application.Quit();
+    }
+
+    public void ShowOptions()
+    {
+        pauseMenu.SetActive(false);
+        optionsMenu.SetActive(true);
+    }
+
+    public void ShowPauseMenu()
+    {
+        pauseMenu.SetActive(true);
+        optionsMenu.SetActive(false);
+    }
+
+    public void Restart()
+    {
+        Time.timeScale = 1;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }
