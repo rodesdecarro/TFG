@@ -16,7 +16,10 @@ public class GameManager : Singleton<GameManager>
     [SerializeField]
     private GameObject optionsMenu;
 
+    [SerializeField]
+    private GameObject gameOverMenu;
 
+    private bool isGameOver = false;
 
     public TileScript HoveredTile { get; set; }
 
@@ -55,15 +58,18 @@ public class GameManager : Singleton<GameManager>
 
     private void DropTower()
     {
-        HoveredTile.ColorTile(Color.white);
+        if (HoveredTile != null)
+        {
+            HoveredTile.ColorTile(Color.white);
+        }
+
         ClickedBtn = null;
         Hover.Instance.Deactivate();
     }
 
     private void HandleEscape()
     {
-
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape) && !isGameOver)
         {
             if (ClickedBtn == null)
             {
@@ -107,6 +113,22 @@ public class GameManager : Singleton<GameManager>
     {
         pauseMenu.SetActive(true);
         optionsMenu.SetActive(false);
+    }
+
+    public void GameOver()
+    {
+        DropTower();
+        Time.timeScale = 0;
+        ShowGameOver();
+        isGameOver = true;
+    }
+
+    public void ShowGameOver()
+    {
+        inGameMenu.SetActive(true);
+        pauseMenu.SetActive(false);
+        optionsMenu.SetActive(false);
+        gameOverMenu.SetActive(true);
     }
 
     public void Restart()
