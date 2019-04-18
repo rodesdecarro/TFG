@@ -2018,7 +2018,7 @@ MonoBehaviour:
   lifesTxt: {fileID: 1879902566}
   waveTxt: {fileID: 905371338}
   waveBtn: {fileID: 581203921}
-  waveSize: 100
+  waveSize: 50
 --- !u!114 &504611322
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6973,7 +6973,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1957301435
 Transform:
   m_ObjectHideFlags: 0

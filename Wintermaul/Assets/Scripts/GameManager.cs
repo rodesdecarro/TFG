@@ -88,7 +88,7 @@ public class GameManager : Singleton<GameManager>
     // Start is called before the first frame update
     void Start()
     {
-        Gold = 100;
+        Gold = 1000;
         Lifes = 50;
         Wave = 0;
     }

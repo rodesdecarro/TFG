@@ -102,6 +102,11 @@ public class Monster : MonoBehaviour
 
     public bool GenerateNewPath()
     {
+        if (GridPosition == LevelManager.Instance.GoalPoint)
+        {
+            return true;
+        }
+
         newPath = AStar.GetPath(GridPosition, LevelManager.Instance.GoalPoint);
 
         return newPath.Count > 0;
@@ -109,8 +114,11 @@ public class Monster : MonoBehaviour
 
     public void SetPathToNewPath()
     {
-        path = new Stack<Node>(new Stack<Node>(newPath));
-        destination = path.Pop().Tile.WorldPosition;
+        if (newPath.Count > 0)
+        {
+            path = new Stack<Node>(new Stack<Node>(newPath));
+            destination = path.Pop().Tile.WorldPosition;
+        }
     }
 
     private void Animate()

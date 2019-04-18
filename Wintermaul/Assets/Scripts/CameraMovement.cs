@@ -49,12 +49,12 @@ public class CameraMovement : MonoBehaviour
             transform.Translate(Vector3.right * cameraSpeed * Time.deltaTime);
         }
 
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(1))
         {
             MouseStartY = Input.mousePosition.y;
             MouseStartX = Input.mousePosition.x;
         }
-        else if (Input.GetMouseButton(0))
+        else if (Input.GetMouseButton(1))
         {
             MouseMoveY = Input.mousePosition.y - MouseStartY;
             MouseMoveX = Input.mousePosition.x - MouseStartX;
