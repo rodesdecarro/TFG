@@ -420,6 +420,7 @@ GameObject:
   - component: {fileID: 110362268}
   - component: {fileID: 110362267}
   - component: {fileID: 110362266}
+  - component: {fileID: 110362270}
   m_Layer: 5
   m_Name: Gold
   m_TagString: Untagged
@@ -519,6 +520,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 110362264}
   m_CullTransparentMesh: 0
+--- !u!225 &110362270
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 110362264}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0
 --- !u!1 &139991106
 GameObject:
   m_ObjectHideFlags: 0
@@ -1963,6 +1976,7 @@ GameObject:
   m_Component:
   - component: {fileID: 504611320}
   - component: {fileID: 504611321}
+  - component: {fileID: 504611322}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -2000,7 +2014,26 @@ MonoBehaviour:
   pauseMenu: {fileID: 477457186}
   optionsMenu: {fileID: 1706135515}
   gameOverMenu: {fileID: 80966335}
-  currencyTxt: {fileID: 110362268}
+  goldTxt: {fileID: 110362268}
+  lifesTxt: {fileID: 1879902566}
+  waveTxt: {fileID: 905371338}
+  waveBtn: {fileID: 581203921}
+  waveSize: 100
+--- !u!114 &504611322
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 504611319}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0c40d95c9a73fa4d9a64183ee2dd9dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectPrefabs:
+  - {fileID: 5003228760110805393, guid: 1f37e90f3ca20e546bf63e6c1554e297, type: 3}
+  - {fileID: 1065112627788888594, guid: 5edea7a37eba8464abea530f002d3155, type: 3}
 --- !u!1 &539570712
 GameObject:
   m_ObjectHideFlags: 0
@@ -6411,6 +6444,7 @@ GameObject:
   - component: {fileID: 1879902566}
   - component: {fileID: 1879902565}
   - component: {fileID: 1879902564}
+  - component: {fileID: 1879902568}
   m_Layer: 5
   m_Name: Life
   m_TagString: Untagged
@@ -6510,6 +6544,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1879902562}
   m_CullTransparentMesh: 0
+--- !u!225 &1879902568
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1879902562}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0
 --- !u!1 &1934659293
 GameObject:
   m_ObjectHideFlags: 0
@@ -6799,6 +6845,7 @@ GameObject:
   - component: {fileID: 1954918768}
   - component: {fileID: 1954918767}
   - component: {fileID: 1954918766}
+  - component: {fileID: 1954918770}
   m_Layer: 5
   m_Name: WaveDesc
   m_TagString: Untagged
@@ -6898,6 +6945,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1954918764}
   m_CullTransparentMesh: 0
+--- !u!225 &1954918770
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1954918764}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0
 --- !u!1 &1957301434
 GameObject:
   m_ObjectHideFlags: 0

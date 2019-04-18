@@ -20,29 +20,77 @@ public class GameManager : Singleton<GameManager>
     [SerializeField]
     private GameObject gameOverMenu;
 
+    public ObjectPool Pool { get; set; }
+
     private bool isGameOver = false;
 
     public TileScript HoveredTile { get; set; }
 
     [SerializeField]
-    private Text currencyTxt;
+    private Text goldTxt;
 
-    private int currency;
+    [SerializeField]
+    private Text lifesTxt;
 
-    public int Currency
+    [SerializeField]
+    private Text waveTxt;
+
+    [SerializeField]
+    private GameObject waveBtn;
+
+    [SerializeField]
+    private int waveSize;
+
+    public List<Monster> ActiveMonsters { get; private set; }
+
+    private int gold;
+
+    public int Gold
     {
-        get => currency;
+        get => gold;
         private set
         {
-            currency = value;
-            currencyTxt.text = value.ToString();
+            gold = value;
+            goldTxt.text = value.ToString();
         }
+    }
+
+    private int lifes;
+
+    public int Lifes
+    {
+        get => lifes;
+        private set
+        {
+            lifes = value;
+            lifesTxt.text = value.ToString();
+        }
+    }
+
+    private int wave;
+
+    public int Wave
+    {
+        get => wave;
+        private set
+        {
+            wave = value;
+            waveTxt.text = value.ToString();
+        }
+    }
+
+    private void Awake()
+    {
+        ActiveMonsters = new List<Monster>();
+        Pool = GetComponent<ObjectPool>();
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        Currency = 100;
+        Gold = 100;
+        Lifes = 50;
+        Wave = 0;
     }
 
     // Update is called once per frame
@@ -51,9 +99,14 @@ public class GameManager : Singleton<GameManager>
         HandleEscape();
     }
 
+    public void LoseLife()
+    {
+        Lifes--;
+    }
+
     public void PickTower(TowerBtn towerBtn)
     {
-        if (ClickedBtn == towerBtn || Currency < towerBtn.Price)
+        if (ClickedBtn == towerBtn || Gold < towerBtn.Price)
         {
             DropTower();
         }
@@ -66,12 +119,12 @@ public class GameManager : Singleton<GameManager>
 
     public void BuyTower()
     {
-        if (Currency >= ClickedBtn.Price)
+        if (Gold >= ClickedBtn.Price)
         {
-            Currency -= ClickedBtn.Price;
+            Gold -= ClickedBtn.Price;
         }
 
-        if (!Input.GetKey(KeyCode.LeftShift) || Currency < ClickedBtn.Price)
+        if (!Input.GetKey(KeyCode.LeftShift) || Gold < ClickedBtn.Price)
         {
             DropTower();
         }
@@ -160,11 +213,30 @@ public class GameManager : Singleton<GameManager>
 
     public void NextWave()
     {
+        Wave++;
         StartCoroutine(SpawnWave());
+        waveBtn.SetActive(false);
     }
 
     private IEnumerator SpawnWave()
     {
-        yield return new WaitForSeconds(1);
+        for (int i = 0; i < waveSize; i++)
+        {
+            Monster monster = Pool.GetObject("Skeleton").GetComponent<Monster>();
+            monster.Spawn();
+            ActiveMonsters.Add(monster);
+
+            yield return new WaitForSeconds(0.3f);
+        }
+    }
+
+    public void RemoveMonster(Monster monster)
+    {
+        ActiveMonsters.Remove(monster);
+
+        if (ActiveMonsters.Count == 0)
+        {
+            waveBtn.SetActive(true);
+        }
     }
 }

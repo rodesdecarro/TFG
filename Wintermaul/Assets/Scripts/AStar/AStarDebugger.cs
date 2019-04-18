@@ -87,15 +87,15 @@ public class AStarDebugger : MonoBehaviour
 
             if (hit.collider != null)
             {
-                TileScript tmp = hit.collider.GetComponent<TileScript>();
+                TileScript tile = hit.collider.GetComponent<TileScript>();
 
-                if (tmp != null && tmp.CanWalk)
+                if (tile != null && tile.CanWalk)
                 {
                     if (start == null)
                     {
-                        SetStart(tmp);
+                        SetStart(tile);
                     }
-                    else if (start == tmp)
+                    else if (start == tile)
                     {
                         if (goal == null)
                         {
@@ -108,7 +108,7 @@ public class AStarDebugger : MonoBehaviour
                     }
                     else if (goal == null)
                     {
-                        SetGoal(tmp);
+                        SetGoal(tile);
                         Stack<Node> newPath = AStar.GetPath(start.GridPosition, goal.GridPosition);
                         SetPath(newPath);
                     }
@@ -116,7 +116,7 @@ public class AStarDebugger : MonoBehaviour
                     {
                         ResetStart();
                         ResetGoal();
-                        SetStart(tmp);
+                        SetStart(tile);
                     }
                 }
             }

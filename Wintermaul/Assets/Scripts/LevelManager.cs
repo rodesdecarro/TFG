@@ -14,8 +14,8 @@ public class LevelManager : Singleton<LevelManager>
     [SerializeField]
     private Transform map;
 
-    private Point blueSpawn;
-    private Point redSpawn;
+    public Point StartPoint { get; private set; }
+    public Point GoalPoint { get; private set; }
 
     public Dictionary<Point, TileScript> Tiles { get; set; }
 
@@ -71,12 +71,12 @@ public class LevelManager : Singleton<LevelManager>
     {
         if (tileType == 4)
         {
-            blueSpawn = new Point(x, y);
+            StartPoint = new Point(x, y);
         }
 
         if (tileType == 2)
         {
-            redSpawn = new Point(x, y);
+            GoalPoint = new Point(x, y);
         }
 
         TileScript newTile = Instantiate(tilePrefabs[tileType]).GetComponent<TileScript>();

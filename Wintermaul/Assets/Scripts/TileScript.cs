@@ -86,9 +86,45 @@ public class TileScript : MonoBehaviour
 
     public void PlaceTower()
     {
+        // Check if any monster is in the tile
+        foreach (Monster monster in GameManager.Instance.ActiveMonsters)
+        {
+            if (monster.GridPosition == GridPosition)
+            {
+                return;
+            }
+        }
+
+        isEmpty = false;
+
+        // Check if exists a path between start and goal
+        if (AStar.GetPath(LevelManager.Instance.StartPoint, LevelManager.Instance.GoalPoint).Count == 0)
+        {
+            isEmpty = true;
+
+            return;
+        }
+
+        // Recalculate paths for each monster
+        foreach (Monster monster in GameManager.Instance.ActiveMonsters)
+        {
+            if (!monster.GenerateNewPath())
+            {
+                // If any monster path is blocked, block the placement
+                isEmpty = true;
+
+                return;
+            }
+        }
+
+        // If no paths are blocked, update them and continue with the placement
+        foreach (Monster monster in GameManager.Instance.ActiveMonsters)
+        {
+            monster.SetPathToNewPath();
+        }
+
         GameObject tower = Instantiate(GameManager.Instance.ClickedBtn.TowerPrefab, WorldPosition, Quaternion.identity);
         tower.transform.SetParent(transform);
-        isEmpty = false;
 
         GameManager.Instance.BuyTower();
 

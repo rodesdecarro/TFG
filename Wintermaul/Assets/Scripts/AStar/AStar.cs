@@ -5,23 +5,13 @@ using UnityEngine;
 
 public static class AStar
 {
-    private static Dictionary<Point, Node> nodes;
-
-    private static void CreateNodes()
+    public static Stack<Node> GetPath(Point start, Point goal)
     {
-        nodes = new Dictionary<Point, Node>();
+        Dictionary<Point, Node> nodes = new Dictionary<Point, Node>();
 
         foreach (TileScript tile in LevelManager.Instance.Tiles.Values)
         {
             nodes.Add(tile.GridPosition, new Node(tile));
-        }
-    }
-
-    public static Stack<Node> GetPath(Point start, Point goal)
-    {
-        if (nodes == null)
-        {
-            CreateNodes();
         }
 
         HashSet<Node> openList = new HashSet<Node>();
@@ -83,12 +73,8 @@ public static class AStar
                                 openList.Add(neighborNode);
                                 neighborNode.CalcValues(currentNode, goal, gCost);
                             }
-
-
                         }
                     }
-
-
                 }
             }
 
