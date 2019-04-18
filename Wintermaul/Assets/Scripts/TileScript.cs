@@ -10,7 +10,7 @@ public class TileScript : MonoBehaviour
     private Color32 KoColor = new Color32(255, 127, 127, 255);
     private Color32 OkColor = new Color32(127, 255, 127, 255);
 
-    private SpriteRenderer spriteRenderer;
+    public SpriteRenderer SpriteRenderer { get; set; }
 
     public Vector3 WorldPosition
     {
@@ -19,6 +19,8 @@ public class TileScript : MonoBehaviour
             return new Vector3(transform.position.x + GetComponent<SpriteRenderer>().bounds.size.x / 2, transform.position.y - GetComponent<SpriteRenderer>().bounds.size.y / 2, 0);
         }
     }
+
+    public bool Debugging { get; set; }
 
     [SerializeField]
     private bool canBuild;
@@ -34,7 +36,7 @@ public class TileScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        spriteRenderer = GetComponent<SpriteRenderer>();
+        SpriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     // Update is called once per frame
@@ -54,7 +56,7 @@ public class TileScript : MonoBehaviour
 
     public void OnMouseOver()
     {
-        if (!EventSystem.current.IsPointerOverGameObject() && GameManager.Instance.ClickedBtn != null)
+        if (!EventSystem.current.IsPointerOverGameObject() && GameManager.Instance.ClickedBtn != null && !Debugging)
         {
             GameManager.Instance.HoveredTile = this;
 
@@ -76,7 +78,10 @@ public class TileScript : MonoBehaviour
 
     public void OnMouseExit()
     {
-        ColorTile(Color.white);
+        if (!Debugging)
+        {
+            ColorTile(Color.white);
+        }
     }
 
     public void PlaceTower()
@@ -99,6 +104,6 @@ public class TileScript : MonoBehaviour
 
     public void ColorTile(Color color)
     {
-        spriteRenderer.color = color;
+        SpriteRenderer.color = color;
     }
 }

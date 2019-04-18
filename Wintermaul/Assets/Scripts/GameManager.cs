@@ -157,4 +157,14 @@ public class GameManager : Singleton<GameManager>
         Time.timeScale = 1;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
+
+    public void NextWave()
+    {
+        StartCoroutine(SpawnWave());
+    }
+
+    private IEnumerator SpawnWave()
+    {
+        yield return new WaitForSeconds(1);
+    }
 }
