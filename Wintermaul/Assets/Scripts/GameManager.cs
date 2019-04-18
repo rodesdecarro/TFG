@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameManager : Singleton<GameManager>
 {
@@ -23,10 +24,25 @@ public class GameManager : Singleton<GameManager>
 
     public TileScript HoveredTile { get; set; }
 
+    [SerializeField]
+    private Text currencyTxt;
+
+    private int currency;
+
+    public int Currency
+    {
+        get => currency;
+        private set
+        {
+            currency = value;
+            currencyTxt.text = value.ToString();
+        }
+    }
+
     // Start is called before the first frame update
     void Start()
     {
-
+        Currency = 100;
     }
 
     // Update is called once per frame
@@ -37,7 +53,7 @@ public class GameManager : Singleton<GameManager>
 
     public void PickTower(TowerBtn towerBtn)
     {
-        if (ClickedBtn == towerBtn)
+        if (ClickedBtn == towerBtn || Currency < towerBtn.Price)
         {
             DropTower();
         }
@@ -50,7 +66,12 @@ public class GameManager : Singleton<GameManager>
 
     public void BuyTower()
     {
-        if (!Input.GetKey(KeyCode.LeftShift))
+        if (Currency >= ClickedBtn.Price)
+        {
+            Currency -= ClickedBtn.Price;
+        }
+
+        if (!Input.GetKey(KeyCode.LeftShift) || Currency < ClickedBtn.Price)
         {
             DropTower();
         }
