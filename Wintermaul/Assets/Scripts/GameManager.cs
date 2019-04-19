@@ -43,6 +43,12 @@ public class GameManager : Singleton<GameManager>
     private GameObject waveBtn = null;
 
     [SerializeField]
+    private GameObject sellTowerBtn = null;
+
+    [SerializeField]
+    private GameObject upgradeTowerBtn = null;
+
+    [SerializeField]
     private int initialGold = 0;
 
     [SerializeField]
@@ -99,8 +105,6 @@ public class GameManager : Singleton<GameManager>
             waveTxt.text = value.ToString();
         }
     }
-
-
 
     private int score;
 
@@ -304,6 +308,15 @@ public class GameManager : Singleton<GameManager>
     {
         selectedTower = tower;
         selectedTower.Select();
+
+        sellTowerBtn.SetActive(true);
+        sellTowerBtn.transform.GetChild(0).GetComponent<Text>().text = $"Sell ({selectedTower.Price / 2})";
+
+        if (selectedTower.Upgrade != null)
+        {
+            upgradeTowerBtn.SetActive(true);
+            upgradeTowerBtn.transform.GetChild(0).GetComponent<Text>().text = $"Upgrade ({selectedTower.Upgrade.Price - selectedTower.Price / 2})";
+        }
     }
 
     private void UnselectTower()
@@ -312,6 +325,51 @@ public class GameManager : Singleton<GameManager>
         {
             selectedTower.Select();
             selectedTower = null;
+        }
+
+        sellTowerBtn.SetActive(false);
+        upgradeTowerBtn.SetActive(false);
+    }
+
+    public void SellTower()
+    {
+        // Update player's gold
+        Gold += selectedTower.Price / 2;
+
+        // Set the tile parent as Empty
+        selectedTower.transform.GetComponentInParent<TileScript>().IsEmpty = true;
+
+        // Recalculate monster paths
+        foreach (Monster monster in ActiveMonsters)
+        {
+            monster.GenerateNewPath();
+            monster.SetPathToNewPath();
+        }
+
+        // Remove the tower
+        Destroy(selectedTower.transform.parent.gameObject);
+
+        UnselectTower();
+    }
+
+    public void UpgradeTower()
+    {
+        int upgradePrice = selectedTower.Upgrade.Price - selectedTower.Price / 2;
+
+        if (Gold >= upgradePrice)
+        {
+            // Update player's gold
+            Gold -= upgradePrice;
+
+            // Place the upgraded tower
+            Tower newTower = selectedTower.transform.GetComponentInParent<TileScript>().BuildTower(selectedTower.UpgradePrefab);
+
+            // Remove the tower
+            Destroy(selectedTower.transform.parent.gameObject);
+
+            UnselectTower();
+
+            SelectTower(newTower);
         }
     }
 }

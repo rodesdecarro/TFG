@@ -114,6 +114,8 @@ MonoBehaviour:
   projectileType: tower5Projectile
   projectileSpeed: 15
   damage: 700
+  price: 500
+  upgrade: {fileID: 0}
 --- !u!1 &6751898437255327848
 GameObject:
   m_ObjectHideFlags: 0

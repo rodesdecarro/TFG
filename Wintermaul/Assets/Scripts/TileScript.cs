@@ -28,12 +28,12 @@ public class TileScript : MonoBehaviour
     [SerializeField]
     private bool canWalk = false;
 
-    private bool isEmpty;
 
     private Tower tower;
 
-    public bool CanBuild { get => canBuild && isEmpty; }
-    public bool CanWalk { get => canWalk && isEmpty; }
+    public bool CanBuild { get => canBuild && IsEmpty; }
+    public bool CanWalk { get => canWalk && IsEmpty; }
+    public bool IsEmpty { get; set; }
 
     // Start is called before the first frame update
     void Start()
@@ -49,7 +49,7 @@ public class TileScript : MonoBehaviour
 
     public void Setup(Point gridPosition, Vector3 worldPosition, Transform parent)
     {
-        isEmpty = true;
+        IsEmpty = true;
         GridPosition = gridPosition;
         transform.position = worldPosition;
         transform.SetParent(parent);
@@ -104,12 +104,12 @@ public class TileScript : MonoBehaviour
             }
         }
 
-        isEmpty = false;
+        IsEmpty = false;
 
         // Check if exists a path between start and goal
         if (AStar.GetPath(LevelManager.Instance.StartPoint, LevelManager.Instance.GoalPoint).Count == 0)
         {
-            isEmpty = true;
+            IsEmpty = true;
 
             return;
         }
@@ -120,7 +120,7 @@ public class TileScript : MonoBehaviour
             if (!monster.GenerateNewPath())
             {
                 // If any monster path is blocked, block the placement
-                isEmpty = true;
+                IsEmpty = true;
 
                 return;
             }
@@ -132,10 +132,7 @@ public class TileScript : MonoBehaviour
             monster.SetPathToNewPath();
         }
 
-        GameObject newTower = Instantiate(GameManager.Instance.ClickedBtn.TowerPrefab, WorldPosition, Quaternion.identity);
-        newTower.transform.SetParent(transform);
-
-        tower = newTower.transform.GetChild(0).GetComponent<Tower>();
+        BuildTower(GameManager.Instance.ClickedBtn.TowerPrefab);
 
         GameManager.Instance.BuyTower();
 
@@ -147,6 +144,16 @@ public class TileScript : MonoBehaviour
         {
             ColorTile(KoColor);
         }
+    }
+
+    public Tower BuildTower(GameObject towerPrefab)
+    {
+        GameObject newTower = Instantiate(towerPrefab, WorldPosition, Quaternion.identity);
+        newTower.transform.SetParent(transform);
+
+        tower = newTower.transform.GetChild(0).GetComponent<Tower>();
+
+        return tower;
     }
 
     public void ColorTile(Color color)

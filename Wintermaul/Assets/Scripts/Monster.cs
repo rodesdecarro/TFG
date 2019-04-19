@@ -189,6 +189,19 @@ public class Monster : MonoBehaviour
         transform.rotation = Quaternion.Slerp(transform.rotation, q, Time.deltaTime * speed * 2);
     }
 
+    private Quaternion rotation;
+
+    void Awake()
+    {
+        rotation = transform.rotation;
+    }
+
+    void LateUpdate()
+    {
+        // Keep the health bars without rotation
+        transform.GetChild(0).transform.rotation = rotation;
+    }
+
     private IEnumerator Despawn()
     {
         GameManager.Instance.Lifes--;

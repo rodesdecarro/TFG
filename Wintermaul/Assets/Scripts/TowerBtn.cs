@@ -13,10 +13,7 @@ public class TowerBtn : MonoBehaviour
     [SerializeField]
     private GameObject towerPrefab = null;
 
-    [SerializeField]
-    private int price = 0;
-
-    public int Price { get => price; }
+    public int Price { get => TowerPrefab.transform.GetChild(0).GetComponent<Tower>().Price; }
 
     [SerializeField]
     private Text priceTxt = null;

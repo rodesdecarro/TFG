@@ -114,6 +114,8 @@ MonoBehaviour:
   projectileType: tower2Projectile
   projectileSpeed: 15
   damage: 130
+  price: 150
+  upgrade: {fileID: 4002312358375257204, guid: bf426b7e5b8b8e4448b3ef4c75984c53, type: 3}
 --- !u!1 &231085663955310879
 GameObject:
   m_ObjectHideFlags: 0
