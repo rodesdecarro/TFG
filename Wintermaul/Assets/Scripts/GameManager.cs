@@ -37,10 +37,24 @@ public class GameManager : Singleton<GameManager>
     private Text waveTxt = null;
 
     [SerializeField]
+    private Text scoreTxt = null;
+
+    [SerializeField]
     private GameObject waveBtn = null;
 
     [SerializeField]
+    private int initialGold = 0;
+
+    [SerializeField]
+    private int initialLifes = 0;
+
+    [SerializeField]
+    private int initialWave = 0;
+
+    [SerializeField]
     private int waveSize = 0;
+
+    private Tower selectedTower;
 
     public List<Monster> ActiveMonsters { get; private set; }
 
@@ -49,7 +63,7 @@ public class GameManager : Singleton<GameManager>
     public int Gold
     {
         get => gold;
-        private set
+        set
         {
             gold = value;
             goldTxt.text = value.ToString();
@@ -86,6 +100,20 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
+
+
+    private int score;
+
+    public int Score
+    {
+        get => score;
+        set
+        {
+            score = value;
+            scoreTxt.text = value.ToString();
+        }
+    }
+
     private void Awake()
     {
         ActiveMonsters = new List<Monster>();
@@ -95,9 +123,9 @@ public class GameManager : Singleton<GameManager>
     // Start is called before the first frame update
     void Start()
     {
-        Gold = 1000;
-        Lifes = 50;
-        Wave = 0;
+        Gold = initialGold;
+        Lifes = initialLifes;
+        Wave = initialWave;
     }
 
     // Update is called once per frame
@@ -117,6 +145,8 @@ public class GameManager : Singleton<GameManager>
 
     public void PickTower(TowerBtn towerBtn)
     {
+        UnselectTower();
+
         if (ClickedBtn == towerBtn || Gold < towerBtn.Price)
         {
             DropTower();
@@ -124,7 +154,7 @@ public class GameManager : Singleton<GameManager>
         else
         {
             ClickedBtn = towerBtn;
-            Hover.Instance.Activate(ClickedBtn.Sprite);
+            Hover.Instance.Activate(ClickedBtn.Sprite, ClickedBtn.TowerPrefab.transform.GetChild(0).GetComponent<Tower>().Range);
         }
     }
 
@@ -158,7 +188,11 @@ public class GameManager : Singleton<GameManager>
     {
         if (Input.GetKeyDown(KeyCode.Escape) && !isGameOver)
         {
-            if (ClickedBtn == null)
+            if (selectedTower != null)
+            {
+                UnselectTower();
+            }
+            else if (ClickedBtn == null)
             {
                 ShowInGameMenu();
             }
@@ -250,6 +284,34 @@ public class GameManager : Singleton<GameManager>
         if (ActiveMonsters.Count == 0)
         {
             waveBtn.SetActive(true);
+        }
+    }
+
+    public void ClickTower(Tower tower)
+    {
+        if (selectedTower == tower)
+        {
+            UnselectTower();
+        }
+        else
+        {
+            UnselectTower();
+            SelectTower(tower);
+        }
+    }
+
+    private void SelectTower(Tower tower)
+    {
+        selectedTower = tower;
+        selectedTower.Select();
+    }
+
+    private void UnselectTower()
+    {
+        if (selectedTower != null)
+        {
+            selectedTower.Select();
+            selectedTower = null;
         }
     }
 }

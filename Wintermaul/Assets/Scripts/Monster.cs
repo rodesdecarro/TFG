@@ -18,11 +18,50 @@ public class Monster : MonoBehaviour
     private Vector3 destination;
 
     public bool IsActive { get; set; }
+    public int PathLength { get => path.Count; }
+
+    private int maxHealth;
+    private int currentHealth;
+
+    private int gold;
+    private int points;
 
     public void Spawn()
     {
+        maxHealth = CalculateHealth();
+        currentHealth = maxHealth;
+        healthBar.SetFillAmount(1);
+
+        gold = CalculateGold();
+
+        points = CalculatePoints();
+
         SetToStart();
     }
+
+    private int CalculateGold()
+    {
+        int w = GameManager.Instance.Wave;
+
+        return w / 5 + 1;
+    }
+
+    private int CalculateHealth()
+    {
+        int w = GameManager.Instance.Wave;
+
+        return (int)(Math.Pow(w, 3) * Math.Pow(w, 2) * w + 20);
+    }
+
+    private int CalculatePoints()
+    {
+        int w = GameManager.Instance.Wave;
+
+        return w * 10;
+    }
+
+    [SerializeField]
+    private HealthBar healthBar = null;
 
     private void SetToStart()
     {
@@ -31,6 +70,27 @@ public class Monster : MonoBehaviour
         GridPosition = LevelManager.Instance.StartPoint;
         StartCoroutine(Scale(new Vector3(0.1f, 0.1f), new Vector3(1, 1)));
         SetPath();
+    }
+
+    internal void Damage(int damage)
+    {
+        currentHealth -= damage;
+
+        if (currentHealth <= 0)
+        {
+            Die();
+        }
+        else
+        {
+            healthBar.SetFillAmount((float)currentHealth / maxHealth);
+        }
+    }
+
+    private void Die()
+    {
+        GameManager.Instance.Gold += gold;
+        GameManager.Instance.Score += points;
+        Release();
     }
 
     private void Update()
@@ -134,12 +194,12 @@ public class Monster : MonoBehaviour
         GameManager.Instance.Lifes--;
         yield return Scale(new Vector3(1, 1), new Vector3(0.1f, 0.1f));
 
-        //Release();
         SetToStart();
     }
 
     private void Release()
     {
+        IsActive = false;
         GameManager.Instance.RemoveMonster(this);
         GameManager.Instance.Pool.ReleaseObject(gameObject);
     }

@@ -30,6 +30,8 @@ public class TileScript : MonoBehaviour
 
     private bool isEmpty;
 
+    private Tower tower;
+
     public bool CanBuild { get => canBuild && isEmpty; }
     public bool CanWalk { get => canWalk && isEmpty; }
 
@@ -56,22 +58,29 @@ public class TileScript : MonoBehaviour
 
     public void OnMouseOver()
     {
-        if (!EventSystem.current.IsPointerOverGameObject() && GameManager.Instance.ClickedBtn != null && !Debugging)
+        if (!EventSystem.current.IsPointerOverGameObject() && !Debugging)
         {
-            GameManager.Instance.HoveredTile = this;
-
-            if (CanBuild)
+            if (GameManager.Instance.ClickedBtn != null)
             {
-                ColorTile(OkColor);
+                GameManager.Instance.HoveredTile = this;
 
-                if (Input.GetMouseButtonDown(0))
+                if (CanBuild)
                 {
-                    PlaceTower();
+                    ColorTile(OkColor);
+
+                    if (Input.GetMouseButtonDown(0))
+                    {
+                        PlaceTower();
+                    }
+                }
+                else
+                {
+                    ColorTile(KoColor);
                 }
             }
-            else
+            else if (tower != null && Input.GetMouseButtonDown(0))
             {
-                ColorTile(KoColor);
+                GameManager.Instance.ClickTower(tower);
             }
         }
     }
@@ -123,8 +132,10 @@ public class TileScript : MonoBehaviour
             monster.SetPathToNewPath();
         }
 
-        GameObject tower = Instantiate(GameManager.Instance.ClickedBtn.TowerPrefab, WorldPosition, Quaternion.identity);
-        tower.transform.SetParent(transform);
+        GameObject newTower = Instantiate(GameManager.Instance.ClickedBtn.TowerPrefab, WorldPosition, Quaternion.identity);
+        newTower.transform.SetParent(transform);
+
+        tower = newTower.transform.GetChild(0).GetComponent<Tower>();
 
         GameManager.Instance.BuyTower();
 

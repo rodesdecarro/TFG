@@ -7,10 +7,13 @@ public class Hover : Singleton<Hover>
 {
     private SpriteRenderer spriteRenderer;
 
+    private SpriteRenderer rangeSpriteRenderer;
+
     // Start is called before the first frame update
     void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
+        rangeSpriteRenderer = transform.GetChild(0).GetComponent<SpriteRenderer>();
     }
 
     // Update is called once per frame
@@ -28,14 +31,18 @@ public class Hover : Singleton<Hover>
         }
     }
 
-    public void Activate(Sprite sprite)
+    public void Activate(Sprite sprite, int range)
     {
         spriteRenderer.enabled = true;
         spriteRenderer.sprite = sprite;
+
+        rangeSpriteRenderer.enabled = true;
+        rangeSpriteRenderer.transform.localScale = new Vector3(range, range);
     }
 
     internal void Deactivate()
     {
         spriteRenderer.enabled = false;
+        rangeSpriteRenderer.enabled = false;
     }
 }
