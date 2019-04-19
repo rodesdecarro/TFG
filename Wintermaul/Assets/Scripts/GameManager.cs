@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -9,16 +10,16 @@ public class GameManager : Singleton<GameManager>
     public TowerBtn ClickedBtn { get; private set; }
 
     [SerializeField]
-    private GameObject inGameMenu;
+    private GameObject inGameMenu = null;
 
     [SerializeField]
-    private GameObject pauseMenu;
+    private GameObject pauseMenu = null;
 
     [SerializeField]
-    private GameObject optionsMenu;
+    private GameObject optionsMenu = null;
 
     [SerializeField]
-    private GameObject gameOverMenu;
+    private GameObject gameOverMenu = null;
 
     public ObjectPool Pool { get; set; }
 
@@ -27,19 +28,19 @@ public class GameManager : Singleton<GameManager>
     public TileScript HoveredTile { get; set; }
 
     [SerializeField]
-    private Text goldTxt;
+    private Text goldTxt = null;
 
     [SerializeField]
-    private Text lifesTxt;
+    private Text lifesTxt = null;
 
     [SerializeField]
-    private Text waveTxt;
+    private Text waveTxt = null;
 
     [SerializeField]
-    private GameObject waveBtn;
+    private GameObject waveBtn = null;
 
     [SerializeField]
-    private int waveSize;
+    private int waveSize = 0;
 
     public List<Monster> ActiveMonsters { get; private set; }
 
@@ -60,14 +61,20 @@ public class GameManager : Singleton<GameManager>
     public int Lifes
     {
         get => lifes;
-        private set
+        set
         {
             lifes = value;
             lifesTxt.text = value.ToString();
+
+            if (lifes <= 0)
+            {
+                GameOver();
+            }
         }
     }
 
     private int wave;
+    private bool towerBought;
 
     public int Wave
     {
@@ -97,11 +104,15 @@ public class GameManager : Singleton<GameManager>
     void Update()
     {
         HandleEscape();
+        HandleLeftShift();
     }
 
-    public void LoseLife()
+    private void HandleLeftShift()
     {
-        Lifes--;
+        if (Input.GetKeyUp(KeyCode.LeftShift) && towerBought)
+        {
+            DropTower();
+        }
     }
 
     public void PickTower(TowerBtn towerBtn)
@@ -122,6 +133,7 @@ public class GameManager : Singleton<GameManager>
         if (Gold >= ClickedBtn.Price)
         {
             Gold -= ClickedBtn.Price;
+            towerBought = true;
         }
 
         if (!Input.GetKey(KeyCode.LeftShift) || Gold < ClickedBtn.Price)
@@ -139,6 +151,7 @@ public class GameManager : Singleton<GameManager>
 
         ClickedBtn = null;
         Hover.Instance.Deactivate();
+        towerBought = false;
     }
 
     private void HandleEscape()

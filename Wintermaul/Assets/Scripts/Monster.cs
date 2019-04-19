@@ -6,10 +6,10 @@ using UnityEngine;
 public class Monster : MonoBehaviour
 {
     [SerializeField]
-    private float speed;
+    private float speed = 0f;
 
     [SerializeField]
-    private float rotationOffset;
+    private float rotationOffset = 0f;
 
     private Stack<Node> path;
 
@@ -131,7 +131,7 @@ public class Monster : MonoBehaviour
 
     private IEnumerator Despawn()
     {
-        GameManager.Instance.LoseLife();
+        GameManager.Instance.Lifes--;
         yield return Scale(new Vector3(1, 1), new Vector3(0.1f, 0.1f));
 
         //Release();

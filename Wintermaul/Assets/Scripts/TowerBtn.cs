@@ -6,20 +6,20 @@ using UnityEngine.UI;
 public class TowerBtn : MonoBehaviour
 {
     [SerializeField]
-    private Sprite sprite;
+    private Sprite sprite = null;
 
     public Sprite Sprite { get => sprite; }
 
     [SerializeField]
-    private GameObject towerPrefab;
+    private GameObject towerPrefab = null;
 
     [SerializeField]
-    private int price;
+    private int price = 0;
 
     public int Price { get => price; }
 
     [SerializeField]
-    private Text priceTxt;
+    private Text priceTxt = null;
 
     public GameObject TowerPrefab { get => towerPrefab; }
 

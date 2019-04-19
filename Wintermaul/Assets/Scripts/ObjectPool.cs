@@ -17,7 +17,7 @@ public class ObjectPool : MonoBehaviour
     }
 
     [SerializeField]
-    private GameObject[] objectPrefabs;
+    private GameObject[] objectPrefabs = null;
 
     private Dictionary<string, List<GameObject>> pool;
     private Dictionary<string, GameObject> prefabs;

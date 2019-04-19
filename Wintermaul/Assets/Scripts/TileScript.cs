@@ -23,10 +23,10 @@ public class TileScript : MonoBehaviour
     public bool Debugging { get; set; }
 
     [SerializeField]
-    private bool canBuild;
+    private bool canBuild = false;
 
     [SerializeField]
-    private bool canWalk;
+    private bool canWalk = false;
 
     private bool isEmpty;
 

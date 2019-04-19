@@ -5,7 +5,13 @@ using UnityEngine;
 public class CameraMovement : MonoBehaviour
 {
     [SerializeField]
-    private float cameraSpeed;
+    private float cameraSpeed = 0f;
+
+    [SerializeField]
+    private float dragSpeed = 0f;
+
+    [SerializeField]
+    private float mouseWheelSpeed = 0f;
 
     private float xMax;
     private float yMin;
@@ -63,8 +69,13 @@ public class CameraMovement : MonoBehaviour
             MouseStartX = Input.mousePosition.x;
 
 
-            transform.Translate(Vector3.down * MouseMoveY * Time.deltaTime);
-            transform.Translate(Vector3.left * MouseMoveX * Time.deltaTime);
+            transform.Translate(Vector3.down * MouseMoveY * dragSpeed * Time.deltaTime);
+            transform.Translate(Vector3.left * MouseMoveX * dragSpeed * Time.deltaTime);
+        }
+
+        if (Input.GetAxis("Mouse ScrollWheel") != 0)
+        {
+            transform.Translate(Vector3.up * Input.GetAxis("Mouse ScrollWheel") * mouseWheelSpeed * Time.deltaTime);
         }
 
         transform.position = new Vector3(Mathf.Clamp(transform.position.x, 0, xMax), Mathf.Clamp(transform.position.y, yMin, 0), transform.position.z);

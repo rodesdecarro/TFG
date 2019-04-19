@@ -3704,7 +3704,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1065457151
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4613,6 +4613,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cameraSpeed: 15
+  dragSpeed: 5
+  mouseWheelSpeed: 500
 --- !u!1 &1336062981
 GameObject:
   m_ObjectHideFlags: 0

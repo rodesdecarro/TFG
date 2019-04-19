@@ -6,13 +6,13 @@ using UnityEngine;
 public class LevelManager : Singleton<LevelManager>
 {
     [SerializeField]
-    private GameObject[] tilePrefabs;
+    private GameObject[] tilePrefabs = null;
 
     [SerializeField]
-    private CameraMovement cameraMovement;
+    private CameraMovement cameraMovement = null;
 
     [SerializeField]
-    private Transform map;
+    private Transform map = null;
 
     public Point StartPoint { get; private set; }
     public Point GoalPoint { get; private set; }
