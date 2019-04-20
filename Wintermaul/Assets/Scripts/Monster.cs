@@ -107,6 +107,7 @@ public class Monster : MonoBehaviour
 
     private void Die()
     {
+        SoundManager.Instance.PlaySfx("MonsterDie");
         GameManager.Instance.Gold += gold;
         GameManager.Instance.Score += points;
         Release();

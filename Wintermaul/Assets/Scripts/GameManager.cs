@@ -265,6 +265,8 @@ public class GameManager : Singleton<GameManager>
         pauseMenu.SetActive(false);
         optionsMenu.SetActive(false);
         gameOverMenu.SetActive(true);
+
+        SoundManager.Instance.SetBackgroundMusic("MainMenu");
     }
 
     public void Restart()

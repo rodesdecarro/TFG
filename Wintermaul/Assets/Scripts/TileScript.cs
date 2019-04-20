@@ -144,6 +144,8 @@ public class TileScript : MonoBehaviour
         {
             ColorTile(KoColor);
         }
+
+        SoundManager.Instance.PlaySfx("Button");
     }
 
     public Tower BuildTower(GameObject towerPrefab)
