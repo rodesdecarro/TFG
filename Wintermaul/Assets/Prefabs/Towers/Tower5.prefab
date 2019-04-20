@@ -110,10 +110,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   range: 14
+  color: 00ff00
+  name: Emerald Tower
   attackCooldown: 0.05
   projectileType: tower5Projectile
   projectileSpeed: 15
-  damage: 700
+  minDamage: 702
+  maxDamage: 900
   price: 500
   upgrade: {fileID: 0}
 --- !u!1 &6751898437255327848

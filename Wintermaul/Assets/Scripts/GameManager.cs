@@ -16,6 +16,9 @@ public class GameManager : Singleton<GameManager>
     private GameObject pauseMenu = null;
 
     [SerializeField]
+    private GameObject statsPanel = null;
+
+    [SerializeField]
     private GameObject optionsMenu = null;
 
     [SerializeField]
@@ -38,6 +41,12 @@ public class GameManager : Singleton<GameManager>
 
     [SerializeField]
     private Text scoreTxt = null;
+
+    [SerializeField]
+    private Text sizeTxt = null;
+
+    [SerializeField]
+    private Text statsTxt = null;
 
     [SerializeField]
     private GameObject waveBtn = null;
@@ -400,5 +409,16 @@ public class GameManager : Singleton<GameManager>
 
             SelectTower(newTower);
         }
+    }
+
+    public void ShowStats()
+    {
+        statsPanel.SetActive(!statsPanel.activeSelf);
+    }
+
+    public void SetTooltipText(string text)
+    {
+        statsTxt.text = text;
+        sizeTxt.text = text;
     }
 }

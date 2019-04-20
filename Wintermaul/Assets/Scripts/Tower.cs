@@ -17,11 +17,23 @@ public class Tower : MonoBehaviour
 
     public Monster Target { get; private set; }
 
-    public int Damage { get => damage; }
+    public int MinDamage { get => minDamage; }
+    public int MaxDamage { get => maxDamage; }
+
+    public string Color { get => color; }
+    public string Name { get => name; }
+
+    [SerializeField]
+    private string color = "";
+
+    [SerializeField]
+    private string name = "";
 
     public int Price { get => price; }
     public Tower Upgrade { get => upgrade?.transform.GetChild(0).GetComponent<Tower>(); }
     public GameObject UpgradePrefab { get => upgrade; }
+
+    public float AttackCooldown { get => attackCooldown; }
 
     private List<Monster> targets = new List<Monster>();
 
@@ -39,7 +51,10 @@ public class Tower : MonoBehaviour
     private float projectileSpeed = 0f;
 
     [SerializeField]
-    private int damage = 0;
+    private int minDamage = 0;
+
+    [SerializeField]
+    private int maxDamage = 0;
 
     [SerializeField]
     private int price = 0;
@@ -106,7 +121,7 @@ public class Tower : MonoBehaviour
         {
             attackTimer += Time.deltaTime;
 
-            if (attackTimer >= attackCooldown)
+            if (attackTimer >= AttackCooldown)
             {
                 canAttack = true;
                 attackTimer = 0;

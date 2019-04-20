@@ -110,10 +110,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   range: 12
+  color: 00ffff
+  name: Turquoise Tower
   attackCooldown: 0.9
   projectileType: tower3Projectile
   projectileSpeed: 15
-  damage: 290
+  minDamage: 293
+  maxDamage: 380
   price: 280
   upgrade: {fileID: 4475648599498993687, guid: 0f4aa6c8a137134438784dbc07e84547, type: 3}
 --- !u!1 &4002312358375257204

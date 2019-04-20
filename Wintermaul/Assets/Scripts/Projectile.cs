@@ -38,7 +38,9 @@ public class Projectile : MonoBehaviour
     {
         speed = parent.ProjectileSpeed;
         target = parent.Target;
-        damage = parent.Damage;
+        damage = Random.Range(parent.MinDamage, parent.MaxDamage + 1);
+
+
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

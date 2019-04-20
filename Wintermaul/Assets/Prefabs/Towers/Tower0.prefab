@@ -92,7 +92,7 @@ CircleCollider2D:
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 1
-  m_UsedByEffector: 0
+  m_UsedByEffector: 1
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
@@ -110,10 +110,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   range: 10
+  color: ff7f00
+  name: Amber Tower
   attackCooldown: 0.9
   projectileType: tower0Projectile
   projectileSpeed: 15
-  damage: 20
+  minDamage: 22
+  maxDamage: 32
   price: 10
   upgrade: {fileID: 1169123209179011660, guid: f8ef0c2f2f4de2c458becac6d7ab32e8, type: 3}
 --- !u!1 &8711978938673130036
