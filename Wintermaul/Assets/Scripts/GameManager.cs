@@ -118,6 +118,8 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
+    public bool spawning;
+
     private void Awake()
     {
         ActiveMonsters = new List<Monster>();
@@ -271,13 +273,40 @@ public class GameManager : Singleton<GameManager>
 
     private IEnumerator SpawnWave()
     {
-        for (int i = 0; i < waveSize; i++)
+        string monsterType = "";
+
+        switch (Wave % 3)
         {
-            Monster monster = Pool.GetObject("Skeleton").GetComponent<Monster>();
+            case 0:
+                monsterType = "BigSkeleton";
+                break;
+            case 1:
+                monsterType = "Skeleton";
+                break;
+            case 2:
+                monsterType = "Spider";
+                break;
+        }
+
+        spawning = true;
+
+        float waveSizeModifier = 1;
+
+        for (int i = 0; i < waveSize * waveSizeModifier; i++)
+        {
+            Monster monster = Pool.GetObject(monsterType).GetComponent<Monster>();
+
+            waveSizeModifier = monster.WaveSizeModifier;
+
             monster.Spawn();
             ActiveMonsters.Add(monster);
 
-            yield return new WaitForSeconds(0.3f);
+            if ((i + 1) >= waveSize * waveSizeModifier)
+            {
+                spawning = false;
+            }
+
+            yield return new WaitForSeconds(0.5f / monster.SpeedModifier);
         }
     }
 
@@ -285,7 +314,7 @@ public class GameManager : Singleton<GameManager>
     {
         ActiveMonsters.Remove(monster);
 
-        if (ActiveMonsters.Count == 0)
+        if (ActiveMonsters.Count == 0 && !spawning)
         {
             waveBtn.SetActive(true);
         }
@@ -315,7 +344,7 @@ public class GameManager : Singleton<GameManager>
         if (selectedTower.Upgrade != null)
         {
             upgradeTowerBtn.SetActive(true);
-            upgradeTowerBtn.transform.GetChild(0).GetComponent<Text>().text = $"Upgrade ({selectedTower.Upgrade.Price - selectedTower.Price / 2})";
+            upgradeTowerBtn.GetComponent<UpgradeTowerBtn>().Price = selectedTower.Upgrade.Price - selectedTower.Price / 2;
         }
     }
 

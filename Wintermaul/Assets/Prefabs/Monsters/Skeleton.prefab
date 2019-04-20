@@ -96,8 +96,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81e2ab97ade2406499fd8a87097edae4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 1
+  speedModifier: 1
+  healthModifier: 1
+  waveSizeModifier: 1
   rotationOffset: -90
+  sizeMultiplier: 1
   healthBar: {fileID: 3278998362970518558}
 --- !u!95 &5999842338401485207
 Animator:

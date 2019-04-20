@@ -2262,10 +2262,10 @@ MonoBehaviour:
   waveBtn: {fileID: 581203921}
   sellTowerBtn: {fileID: 1846431902}
   upgradeTowerBtn: {fileID: 341001965}
-  initialGold: 10000
-  initialLifes: 5000
+  initialGold: 200
+  initialLifes: 500
   initialWave: 0
-  waveSize: 180
+  waveSize: 100
 --- !u!114 &504611322
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2287,6 +2287,7 @@ MonoBehaviour:
   - {fileID: 6519555120923883885, guid: 0ff98417d6b2ddf429933b9f1933875d, type: 3}
   - {fileID: 4674196174395133713, guid: 33e62a6f63b35764d878bebaecd4a132, type: 3}
   - {fileID: 5050547972495690058, guid: a96d593a83c42c048bde7d8e56b7cc9f, type: 3}
+  - {fileID: 5207302350053014425, guid: 9f9848628c78cac498e2ebcc22b593da, type: 3}
 --- !u!1 &539570712
 GameObject:
   m_ObjectHideFlags: 0

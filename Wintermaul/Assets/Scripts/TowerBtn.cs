@@ -25,4 +25,9 @@ public class TowerBtn : MonoBehaviour
     {
         priceTxt.text = Price.ToString();
     }
+
+    private void Update()
+    {
+        GetComponent<Button>().interactable = GameManager.Instance.Gold >= Price;
+    }
 }

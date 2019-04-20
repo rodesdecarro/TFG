@@ -6,10 +6,19 @@ using UnityEngine;
 public class Monster : MonoBehaviour
 {
     [SerializeField]
-    private float speed = 0f;
+    private float speedModifier = 0f;
+
+    [SerializeField]
+    private float healthModifier = 0f;
+
+    [SerializeField]
+    private float waveSizeModifier = 0f;
 
     [SerializeField]
     private float rotationOffset = 0f;
+
+    [SerializeField]
+    private float sizeMultiplier = 0f;
 
     private Stack<Node> path;
 
@@ -19,6 +28,8 @@ public class Monster : MonoBehaviour
 
     public bool IsActive { get; set; }
     public int PathLength { get => path.Count; }
+    public float WaveSizeModifier { get => waveSizeModifier; }
+    public float SpeedModifier { get => speedModifier; }
 
     private int maxHealth;
     private int currentHealth;
@@ -43,21 +54,21 @@ public class Monster : MonoBehaviour
     {
         int w = GameManager.Instance.Wave;
 
-        return w / 5 + 1;
+        return (int)(w / WaveSizeModifier / 5 + 1);
     }
 
     private int CalculateHealth()
     {
         int w = GameManager.Instance.Wave;
 
-        return (int)(Math.Pow(w, 3) * Math.Pow(w, 2) * w + 20);
+        return (int)((Math.Pow(w, 3) * Math.Pow(w, 2) * w + 20) * healthModifier);
     }
 
     private int CalculatePoints()
     {
         int w = GameManager.Instance.Wave;
 
-        return w * 10;
+        return (int)(w * 10 / WaveSizeModifier);
     }
 
     [SerializeField]
@@ -68,7 +79,7 @@ public class Monster : MonoBehaviour
         transform.position = LevelManager.Instance.Tiles[LevelManager.Instance.StartPoint].WorldPosition;
         transform.rotation = new Quaternion(0, 0, 0, 1);
         GridPosition = LevelManager.Instance.StartPoint;
-        StartCoroutine(Scale(new Vector3(0.1f, 0.1f), new Vector3(1, 1)));
+        StartCoroutine(Scale(new Vector3(0.1f, 0.1f), new Vector3(sizeMultiplier, sizeMultiplier, sizeMultiplier)));
         SetPath();
     }
 
@@ -102,7 +113,7 @@ public class Monster : MonoBehaviour
     {
         if (IsActive)
         {
-            transform.position = Vector2.MoveTowards(transform.position, destination, speed * Time.deltaTime);
+            transform.position = Vector2.MoveTowards(transform.position, destination, SpeedModifier * Time.deltaTime);
 
             RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.zero);
 
@@ -142,7 +153,7 @@ public class Monster : MonoBehaviour
         {
             transform.localScale = Vector3.Lerp(from, to, progress);
 
-            progress += Time.deltaTime * 2;
+            progress += Time.deltaTime * 2 * sizeMultiplier;
 
             yield return null;
         }
@@ -186,7 +197,9 @@ public class Monster : MonoBehaviour
         Vector3 vectorToTarget = destination - transform.position;
         float angle = Mathf.Atan2(vectorToTarget.y, vectorToTarget.x) * Mathf.Rad2Deg - rotationOffset;
         Quaternion q = Quaternion.AngleAxis(angle, Vector3.forward);
-        transform.rotation = Quaternion.Slerp(transform.rotation, q, Time.deltaTime * speed * 2);
+        transform.rotation = Quaternion.Slerp(transform.rotation, q, Time.deltaTime * SpeedModifier * 2);
+
+        GetComponent<SpriteRenderer>().sortingOrder = (int)((GridPosition.Y - transform.position.y + Math.Truncate(transform.position.y)) * 10);
     }
 
     private Quaternion rotation;
@@ -205,7 +218,7 @@ public class Monster : MonoBehaviour
     private IEnumerator Despawn()
     {
         GameManager.Instance.Lifes--;
-        yield return Scale(new Vector3(1, 1), new Vector3(0.1f, 0.1f));
+        yield return Scale(transform.localScale, new Vector3(0.1f, 0.1f));
 
         SetToStart();
     }
