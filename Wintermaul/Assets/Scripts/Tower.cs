@@ -21,13 +21,13 @@ public class Tower : MonoBehaviour
     public int MaxDamage { get => maxDamage; }
 
     public string Color { get => color; }
-    public string Name { get => name; }
+    public string TowerName { get => towerName; }
 
     [SerializeField]
     private string color = "";
 
     [SerializeField]
-    private string name = "";
+    private string towerName = "";
 
     public int Price { get => price; }
     public Tower Upgrade { get => upgrade?.transform.GetChild(0).GetComponent<Tower>(); }
@@ -50,11 +50,26 @@ public class Tower : MonoBehaviour
     [SerializeField]
     private float projectileSpeed = 0f;
 
+    public float SplashArea { get => splashArea; }
+
+    [SerializeField]
+    private float splashArea = 0f;
+
+    public float CritChance { get => critChance; }
+
+    [SerializeField]
+    private float critChance = 0f;
+
     [SerializeField]
     private int minDamage = 0;
 
     [SerializeField]
     private int maxDamage = 0;
+
+    [SerializeField]
+    private float slowDuration = 0;
+
+    public float SlowDuration { get => slowDuration; }
 
     [SerializeField]
     private int price = 0;

@@ -20,6 +20,8 @@ public class Monster : MonoBehaviour
     [SerializeField]
     private float sizeMultiplier = 0f;
 
+    private float slowDuration;
+
     private Stack<Node> path;
 
     public Point GridPosition { get; set; }
@@ -39,6 +41,8 @@ public class Monster : MonoBehaviour
 
     public void Spawn()
     {
+        slowDuration = 0;
+        dead = false;
         maxHealth = CalculateHealth();
         currentHealth = maxHealth;
         healthBar.SetFillAmount(1);
@@ -83,13 +87,17 @@ public class Monster : MonoBehaviour
         SetPath();
     }
 
-    internal void Damage(int damage)
+    private bool dead = false;
+
+    internal void Damage(int damage, float slowDuration)
     {
         currentHealth -= damage;
 
+        this.slowDuration = slowDuration;
+
         if (currentHealth <= 0)
         {
-            Die();
+            dead = true;
         }
         else
         {
@@ -113,7 +121,15 @@ public class Monster : MonoBehaviour
     {
         if (IsActive)
         {
-            transform.position = Vector2.MoveTowards(transform.position, destination, SpeedModifier * Time.deltaTime);
+            float slowMultiplier = 1;
+
+            if (slowDuration > 0)
+            {
+                slowMultiplier = 0.5f;
+                slowDuration -= Time.deltaTime;
+            }
+
+            transform.position = Vector2.MoveTowards(transform.position, destination, SpeedModifier * Time.deltaTime * slowMultiplier);
 
             RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.zero);
 
@@ -211,6 +227,11 @@ public class Monster : MonoBehaviour
 
     void LateUpdate()
     {
+        if (dead)
+        {
+            Die();
+        }
+
         // Keep the health bars without rotation
         transform.GetChild(0).transform.rotation = rotation;
     }

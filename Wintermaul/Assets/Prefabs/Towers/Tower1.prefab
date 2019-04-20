@@ -111,12 +111,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   range: 12
   color: 007fff
-  name: Sapphire Tower
+  towerName: Sapphire Tower
   attackCooldown: 0.7
   projectileType: tower1Projectile
   projectileSpeed: 15
+  splashArea: 1
+  critChance: 0
   minDamage: 72
   maxDamage: 92
+  slowDuration: 0
   price: 50
   upgrade: {fileID: 231085663955310879, guid: 94dd270b21147e64b992bb6441fa8dae, type: 3}
 --- !u!1 &1169123209179011660

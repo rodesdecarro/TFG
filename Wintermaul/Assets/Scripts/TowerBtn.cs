@@ -37,11 +37,26 @@ public class TowerBtn : MonoBehaviour
     public void ShowInfo()
     {
         StringBuilder text = new StringBuilder();
-        text.AppendLine($"<color='#{Tower.Color}'><b>{Tower.Name}</b></color>");
-        text.AppendLine();
-        text.AppendLine($"<b>Range:</b> {Tower.Range}");
-        text.AppendLine($"<b>Damage:</b> {Tower.MinDamage} - {Tower.MaxDamage}");
-        text.Append($"<b>Attack cooldown:</b> {Tower.AttackCooldown} s");
+        text.Append($"<color='#{Tower.Color}'><b>{Tower.TowerName}</b></color>");
+        text.Append("\n");
+        text.Append($"\n<b>Range:</b> {Tower.Range}");
+        text.Append($"\n<b>Damage:</b> {Tower.MinDamage} - {Tower.MaxDamage}");
+        text.Append($"\n<b>Attack cooldown:</b> {Tower.AttackCooldown} s");
+
+        if (Tower.SplashArea > 0)
+        {
+            text.Append($"\n<b>Splash area:</b> {Tower.SplashArea}");
+        }
+
+        if (Tower.CritChance > 0)
+        {
+            text.Append($"\n<b>Critical attack chance:</b> {Tower.CritChance * 100}%");
+        }
+
+        if (Tower.SlowDuration > 0)
+        {
+            text.Append($"\n<b>Slows</b> damaged enemies for {Tower.SlowDuration} s");
+        }
 
         GameManager.Instance.SetTooltipText(text.ToString());
         GameManager.Instance.ShowStats();

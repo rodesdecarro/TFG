@@ -111,12 +111,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   range: 10
   color: ff7f00
-  name: Amber Tower
+  towerName: Amber Tower
   attackCooldown: 0.9
   projectileType: tower0Projectile
   projectileSpeed: 15
+  splashArea: 0
+  critChance: 0
   minDamage: 22
   maxDamage: 32
+  slowDuration: 0
   price: 10
   upgrade: {fileID: 1169123209179011660, guid: f8ef0c2f2f4de2c458becac6d7ab32e8, type: 3}
 --- !u!1 &8711978938673130036

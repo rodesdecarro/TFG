@@ -10,6 +10,10 @@ public class Projectile : MonoBehaviour
 
     private int damage;
 
+    private float splashArea;
+
+    private float slowDuration;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -34,13 +38,19 @@ public class Projectile : MonoBehaviour
         }
     }
 
-    public void Initialize(Tower parent)
+    public void Initialize(Tower tower)
     {
-        speed = parent.ProjectileSpeed;
-        target = parent.Target;
-        damage = Random.Range(parent.MinDamage, parent.MaxDamage + 1);
+        speed = tower.ProjectileSpeed;
+        target = tower.Target;
+        damage = Random.Range(tower.MinDamage, tower.MaxDamage + 1);
 
+        if (tower.CritChance > Random.Range(0f, 1f))
+        {
+            damage *= 2;
+        }
 
+        splashArea = tower.SplashArea;
+        slowDuration = tower.SlowDuration;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -51,8 +61,30 @@ public class Projectile : MonoBehaviour
 
             if (monster == target)
             {
-                monster.Damage(damage);
+                if (splashArea > 0)
+                {
+                    Explode(monster.transform.position);
+                }
+                else
+                {
+                    monster.Damage(damage, slowDuration);
+                }
+
                 GameManager.Instance.Pool.ReleaseObject(gameObject);
+            }
+        }
+    }
+
+    private void Explode(Vector3 center)
+    {
+        foreach (Monster monster in GameManager.Instance.ActiveMonsters)
+        {
+            float distance = Vector3.Distance(center, monster.transform.position);
+
+            if (distance <= splashArea)
+            {
+                // Deals damage to the monster proportionally to the distance, from 100% (center of the explosion) to 50% (border of the explosion)
+                monster.Damage((int)(((splashArea - distance) * 0.5 + 0.5) * damage), slowDuration);
             }
         }
     }

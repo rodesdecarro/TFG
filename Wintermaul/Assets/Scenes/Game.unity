@@ -2609,8 +2609,8 @@ MonoBehaviour:
   waveBtn: {fileID: 581203921}
   sellTowerBtn: {fileID: 1846431902}
   upgradeTowerBtn: {fileID: 341001965}
-  initialGold: 200
-  initialLifes: 500
+  initialGold: 2000
+  initialLifes: 50
   initialWave: 0
   waveSize: 100
   spawning: 0

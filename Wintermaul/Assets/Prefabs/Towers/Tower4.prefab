@@ -111,12 +111,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   range: 14
   color: ff00ff
-  name: Amethyst Tower
+  towerName: Amethyst Tower
   attackCooldown: 0.9
   projectileType: tower4Projectile
   projectileSpeed: 15
+  splashArea: 2
+  critChance: 0
   minDamage: 652
   maxDamage: 752
+  slowDuration: 0
   price: 400
   upgrade: {fileID: 6751898437255327848, guid: 206eacca520b18a46991db87316eb02c, type: 3}
 --- !u!1 &4475648599498993687
