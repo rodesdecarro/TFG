@@ -65,7 +65,7 @@ public class Monster : MonoBehaviour
     {
         int w = GameManager.Instance.Wave;
 
-        return (int)((Math.Pow(w, 3) * Math.Pow(w, 2) * w + 20) * healthModifier);
+        return (int)((0.5 * Math.Pow(w, 3) * 0.5 * Math.Pow(w, 2) * w + 20) * healthModifier);
     }
 
     private int CalculatePoints()
