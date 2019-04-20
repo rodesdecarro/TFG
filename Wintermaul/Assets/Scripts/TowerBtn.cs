@@ -41,7 +41,7 @@ public class TowerBtn : MonoBehaviour
         text.AppendLine();
         text.AppendLine($"<b>Range:</b> {Tower.Range}");
         text.AppendLine($"<b>Damage:</b> {Tower.MinDamage} - {Tower.MaxDamage}");
-        text.AppendLine($"<b>Attack cooldown:</b> {Tower.AttackCooldown} s");
+        text.Append($"<b>Attack cooldown:</b> {Tower.AttackCooldown} s");
 
         GameManager.Instance.SetTooltipText(text.ToString());
         GameManager.Instance.ShowStats();
