@@ -55,9 +55,10 @@ public class LevelManager : Singleton<LevelManager>
             }
         }
 
+        Vector3 minTile = Tiles[new Point(0, 0)].transform.position;
         Vector3 maxTile = Tiles[new Point(mapX - 1, mapY - 1)].transform.position;
 
-        cameraMovement.SetLimits(new Vector3(maxTile.x + TileSize, maxTile.y - TileSize));
+        cameraMovement.SetLimits(new Vector3(maxTile.x + TileSize, maxTile.y - TileSize), minTile);
     }
 
     private string[] ReadLevelText()
@@ -77,6 +78,11 @@ public class LevelManager : Singleton<LevelManager>
         if (tileType == 2)
         {
             GoalPoint = new Point(x, y);
+        }
+
+        if (tileType == 0 && UnityEngine.Random.Range(0f, 1f) < 0.05)
+        {
+            tileType = 5;
         }
 
         TileScript newTile = Instantiate(tilePrefabs[tileType]).GetComponent<TileScript>();

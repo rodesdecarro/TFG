@@ -10,9 +10,6 @@ public class CameraMovement : MonoBehaviour
     [SerializeField]
     private float dragSpeed = 0f;
 
-    [SerializeField]
-    private float mouseWheelSpeed = 0f;
-
     private float xMax;
     private float yMin;
 
@@ -21,10 +18,12 @@ public class CameraMovement : MonoBehaviour
     private float MouseStartX;
     private float MouseMoveX;
 
+    private Camera camera;
+
     // Start is called before the first frame update
     void Start()
     {
-
+        camera = transform.GetComponent<Camera>();
     }
 
     // Update is called once per frame
@@ -35,24 +34,36 @@ public class CameraMovement : MonoBehaviour
 
     private void GetInput()
     {
+        if (Input.GetAxis("Mouse ScrollWheel") < 0)
+        {
+            camera.orthographicSize = Mathf.Min(camera.orthographicSize + 1, 12);
+        }
+        else if (Input.GetAxis("Mouse ScrollWheel") > 0)
+        {
+            camera.orthographicSize = Mathf.Max(5, camera.orthographicSize - 1);
+        }
+
+        float newX = 0;
+        float newY = 0;
+
         if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
         {
-            transform.Translate(Vector3.up * cameraSpeed * Time.deltaTime);
+            newY += cameraSpeed * Time.deltaTime;
         }
 
         if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
         {
-            transform.Translate(Vector3.left * cameraSpeed * Time.deltaTime);
+            newX -= cameraSpeed * Time.deltaTime;
         }
 
         if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow))
         {
-            transform.Translate(Vector3.down * cameraSpeed * Time.deltaTime);
+            newY -= cameraSpeed * Time.deltaTime;
         }
 
         if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
         {
-            transform.Translate(Vector3.right * cameraSpeed * Time.deltaTime);
+            newX += cameraSpeed * Time.deltaTime;
         }
 
         if (Input.GetMouseButtonDown(1))
@@ -69,23 +80,46 @@ public class CameraMovement : MonoBehaviour
             MouseStartX = Input.mousePosition.x;
 
 
-            transform.Translate(Vector3.down * MouseMoveY * dragSpeed * Time.deltaTime);
-            transform.Translate(Vector3.left * MouseMoveX * dragSpeed * Time.deltaTime);
+            newY -= MouseMoveY * dragSpeed * Time.deltaTime;
+            newX -= MouseMoveX * dragSpeed * Time.deltaTime;
         }
 
-        if (Input.GetAxis("Mouse ScrollWheel") != 0)
+        if (newX != 0 || newY != 0)
         {
-            transform.Translate(Vector3.up * Input.GetAxis("Mouse ScrollWheel") * mouseWheelSpeed * Time.deltaTime);
+            transform.Translate(new Vector3(newX, newY));
         }
 
-        transform.position = new Vector3(Mathf.Clamp(transform.position.x, 0, xMax), Mathf.Clamp(transform.position.y, yMin, 0), transform.position.z);
+        float difMinX = (Camera.main.ViewportToWorldPoint(new Vector3(0, 1)).x - minTile.x);
+        float difMinY = (Camera.main.ViewportToWorldPoint(new Vector3(0, 1)).y - minTile.y);
+        float difMaxX = (Camera.main.ViewportToWorldPoint(new Vector3(1, 0)).x - maxTile.x);
+        float difMaxY = (Camera.main.ViewportToWorldPoint(new Vector3(1, 0)).y - maxTile.y);
+
+        if (difMinX < 0)
+        {
+            transform.Translate(Vector3.left * difMinX);
+        }
+        else if (difMaxX > 0 && Mathf.Abs(difMinX) > 0.001)
+        {
+            newX = Mathf.Min(newX, -difMinX);
+            transform.Translate(Vector3.left * difMaxX);
+        }
+
+        if (difMinY > 0)
+        {
+            transform.Translate(Vector3.down * difMinY);
+        }
+        else if (difMaxY < 0 && Mathf.Abs(difMinY) > 0.001)
+        {
+            transform.Translate(Vector3.down * difMaxY);
+        }
     }
 
-    public void SetLimits(Vector3 maxTile)
-    {
-        Vector3 worldPoint = Camera.main.ViewportToWorldPoint(new Vector3(1, 0));
+    private Vector3 maxTile;
+    private Vector3 minTile;
 
-        xMax = Mathf.Max(0, maxTile.x - worldPoint.x);
-        yMin = Mathf.Min(0, maxTile.y - worldPoint.y);
+    public void SetLimits(Vector3 maxTile, Vector3 minTile)
+    {
+        this.minTile = minTile;
+        this.maxTile = maxTile;
     }
 }
