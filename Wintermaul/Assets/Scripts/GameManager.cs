@@ -69,20 +69,40 @@ public class GameManager : Singleton<GameManager>
     [SerializeField]
     private int waveSize = 0;
 
+    [SerializeField]
+    private Button[] speedButtons;
+
     private Tower selectedTower;
 
     public List<Monster> ActiveMonsters { get; private set; }
 
-    private int gold;
+    private float gold;
 
-    public int Gold
+    public float Gold
     {
         get => gold;
         set
         {
             gold = value;
-            goldTxt.text = value.ToString();
+            goldTxt.text = ((int)value).ToString();
         }
+    }
+
+    public int SpeedModifier { get; private set; }
+
+    private int[] speedsModifiers = new int[] { 1, 3, 5 };
+
+    public void ChangeSpeed(int speedIndex)
+    {
+        SpeedModifier = speedsModifiers[speedIndex];
+        Time.timeScale = SpeedModifier;
+
+        foreach(Button button in speedButtons)
+        {
+            button.GetComponent<Image>().color = new Color(0, 0, 0, 0.4f);
+        }
+
+        speedButtons[speedIndex].GetComponent<Image>().color = new Color(0, 0, 0, 1);
     }
 
     private int lifes;
@@ -138,6 +158,7 @@ public class GameManager : Singleton<GameManager>
     // Start is called before the first frame update
     void Start()
     {
+        SpeedModifier = 1;
         Gold = initialGold;
         Lifes = initialLifes;
         Wave = initialWave;
@@ -230,7 +251,7 @@ public class GameManager : Singleton<GameManager>
         }
         else
         {
-            Time.timeScale = 1;
+            Time.timeScale = SpeedModifier;
         }
     }
 

@@ -36,7 +36,7 @@ public class Monster : MonoBehaviour
     private int maxHealth;
     private int currentHealth;
 
-    private int gold;
+    private float gold;
     private int points;
 
     public void Spawn()
@@ -54,11 +54,11 @@ public class Monster : MonoBehaviour
         SetToStart();
     }
 
-    private int CalculateGold()
+    private float CalculateGold()
     {
         int w = GameManager.Instance.Wave;
 
-        return (int)(w / WaveSizeModifier / 5 + 1);
+        return w / WaveSizeModifier / 5f * 2f;
     }
 
     private int CalculateHealth()
