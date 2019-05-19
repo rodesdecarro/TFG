@@ -112,10 +112,10 @@ MonoBehaviour:
   range: 14
   color: ff00ff
   towerName: Amethyst Tower
-  attackCooldown: 0.9
+  attackCooldown: 1.3
   projectileType: tower4Projectile
   projectileSpeed: 15
-  splashArea: 2
+  splashArea: 4
   critChance: 0
   minDamage: 652
   maxDamage: 752

@@ -97,8 +97,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speedModifier: 0.5
-  healthModifier: 4
-  waveSizeModifier: 0.25
+  healthModifier: 8
+  waveSizeModifier: 0.5
   rotationOffset: -90
   sizeMultiplier: 2
   healthBar: {fileID: 2353782034807832086}

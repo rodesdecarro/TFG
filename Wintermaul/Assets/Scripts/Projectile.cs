@@ -46,7 +46,7 @@ public class Projectile : MonoBehaviour
 
         if (tower.CritChance > Random.Range(0f, 1f))
         {
-            damage *= 2;
+            damage *= 5;
         }
 
         splashArea = tower.SplashArea;
@@ -81,10 +81,10 @@ public class Projectile : MonoBehaviour
         {
             float distance = Vector3.Distance(center, monster.transform.position);
 
-            if (distance <= splashArea)
+            if (distance < splashArea)
             {
-                // Deals damage to the monster proportionally to the distance, from 100% (center of the explosion) to 50% (border of the explosion)
-                monster.Damage((int)(((splashArea - distance) * 0.5 + 0.5) * damage), slowDuration);
+                // Deals damage to the monster proportionally to the distance, from 100% (center of the explosion) to 0% (border of the explosion)
+                monster.Damage((int)((splashArea - distance) * damage), slowDuration);
             }
         }
     }

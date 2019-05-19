@@ -112,10 +112,10 @@ MonoBehaviour:
   range: 14
   color: 00ff00
   towerName: Emerald Tower
-  attackCooldown: 0.05
+  attackCooldown: 0.1
   projectileType: tower5Projectile
   projectileSpeed: 15
-  splashArea: 1.5
+  splashArea: 1
   critChance: 0
   minDamage: 702
   maxDamage: 900

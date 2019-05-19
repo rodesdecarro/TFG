@@ -80,7 +80,7 @@ public class LevelManager : Singleton<LevelManager>
             GoalPoint = new Point(x, y);
         }
 
-        if (tileType == 0 && UnityEngine.Random.Range(0f, 1f) < 0.05)
+        if (tileType == 0 && UnityEngine.Random.Range(0f, 1f) < 0.1 )
         {
             tileType = 5;
         }

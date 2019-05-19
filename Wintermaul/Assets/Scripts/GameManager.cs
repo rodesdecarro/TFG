@@ -22,6 +22,9 @@ public class GameManager : Singleton<GameManager>
     private GameObject optionsMenu = null;
 
     [SerializeField]
+    private GameObject cheatsMenu = null;
+
+    [SerializeField]
     private GameObject gameOverMenu = null;
 
     public ObjectPool Pool { get; set; }
@@ -97,7 +100,7 @@ public class GameManager : Singleton<GameManager>
         SpeedModifier = speedsModifiers[speedIndex];
         Time.timeScale = SpeedModifier;
 
-        foreach(Button button in speedButtons)
+        foreach (Button button in speedButtons)
         {
             button.GetComponent<Image>().color = new Color(0, 0, 0, 0.4f);
         }
@@ -264,12 +267,21 @@ public class GameManager : Singleton<GameManager>
     {
         pauseMenu.SetActive(false);
         optionsMenu.SetActive(true);
+        cheatsMenu.SetActive(false);
     }
 
     public void ShowPauseMenu()
     {
         pauseMenu.SetActive(true);
         optionsMenu.SetActive(false);
+        cheatsMenu.SetActive(false);
+    }
+
+    public void ShowCheats()
+    {
+        pauseMenu.SetActive(false);
+        optionsMenu.SetActive(false);
+        cheatsMenu.SetActive(true);
     }
 
     public void GameOver()
@@ -285,9 +297,20 @@ public class GameManager : Singleton<GameManager>
         inGameMenu.SetActive(true);
         pauseMenu.SetActive(false);
         optionsMenu.SetActive(false);
+        cheatsMenu.SetActive(false);
         gameOverMenu.SetActive(true);
 
         SoundManager.Instance.SetBackgroundMusic("MainMenu");
+    }
+
+    public void AddGold()
+    {
+        Gold += 1000;
+    }
+
+    public void AddLifes()
+    {
+        Lifes += 100;
     }
 
     public void Restart()
