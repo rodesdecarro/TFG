@@ -66,7 +66,7 @@ public class SoundManager : Singleton<SoundManager>
         sfxSlider.value = sfxSource.volume;
     }
 
-    internal void SetBackgroundMusic(string name)
+    public void SetBackgroundMusic(string name)
     {
         musicSource.clip = audioClips[name];
         musicSource.Play();

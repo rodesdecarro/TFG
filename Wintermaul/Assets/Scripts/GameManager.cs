@@ -150,7 +150,7 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
-    public bool spawning;
+    private bool spawning;
 
     private void Awake()
     {

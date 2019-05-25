@@ -89,7 +89,7 @@ public class Monster : MonoBehaviour
 
     private bool dead = false;
 
-    internal void Damage(int damage, float slowDuration)
+    public void Damage(int damage, float slowDuration)
     {
         currentHealth -= damage;
 

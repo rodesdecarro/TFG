@@ -40,7 +40,7 @@ public class Hover : Singleton<Hover>
         rangeSpriteRenderer.transform.localScale = new Vector3(range, range);
     }
 
-    internal void Deactivate()
+    public void Deactivate()
     {
         spriteRenderer.enabled = false;
         rangeSpriteRenderer.enabled = false;
