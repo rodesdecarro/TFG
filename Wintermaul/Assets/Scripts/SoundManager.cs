@@ -33,8 +33,7 @@ public class SoundManager : Singleton<SoundManager>
         LoadVolume();
 
         musicSlider.onValueChanged.AddListener(delegate { UpdateVolume(); });
-        sfxSlider.onValueChanged.AddListener(delegate { UpdateVolume(); });
-
+        sfxSlider.onValueChanged.AddListener(delegate { UpdateVolume(); PlaySfx("Button"); });
     }
 
     // Update is called once per frame
