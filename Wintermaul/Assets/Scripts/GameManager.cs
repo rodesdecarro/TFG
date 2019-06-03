@@ -73,6 +73,12 @@ public class GameManager : Singleton<GameManager>
     private int waveSize = 0;
 
     [SerializeField]
+    private int maxWave = 0;
+
+    [SerializeField]
+    private Text gameOverTxt = null;
+
+    [SerializeField]
     private Button[] speedButtons;
 
     private Tower selectedTower;
@@ -134,7 +140,7 @@ public class GameManager : Singleton<GameManager>
         private set
         {
             wave = value;
-            waveTxt.text = value.ToString();
+            waveTxt.text = $"{value}/{maxWave}";
         }
     }
 
@@ -172,6 +178,15 @@ public class GameManager : Singleton<GameManager>
     {
         HandleEscape();
         HandleLeftShift();
+        HandleRightBtn();
+    }
+
+    private void HandleRightBtn()
+    {
+        if (Input.GetMouseButtonDown(1) && selectedTower != null)
+        {
+            UnselectTower();
+        }
     }
 
     private void HandleLeftShift()
@@ -371,7 +386,25 @@ public class GameManager : Singleton<GameManager>
 
         if (ActiveMonsters.Count == 0 && !spawning)
         {
-            waveBtn.SetActive(true);
+            // Wave ended. Reward player with 5% of current gold
+            Gold *= 1.05f;
+
+            if (wave == maxWave)
+            {
+                // The game ends
+                GameOver();
+
+                // Add the remaining gold and lifes as bonus points
+                Score += (int)Gold * 10;
+                Score += Lifes * 100;
+
+                // Update the Game Over text
+                gameOverTxt.text = "You win!";
+            }
+            else if (selectedTower == null)
+            {
+                waveBtn.SetActive(true);
+            }
         }
     }
 
@@ -401,6 +434,8 @@ public class GameManager : Singleton<GameManager>
             upgradeTowerBtn.SetActive(true);
             upgradeTowerBtn.GetComponent<UpgradeTowerBtn>().Price = selectedTower.Upgrade.Price - selectedTower.Price / 2;
         }
+
+        waveBtn.SetActive(false);
     }
 
     private void UnselectTower()
@@ -413,6 +448,11 @@ public class GameManager : Singleton<GameManager>
 
         sellTowerBtn.SetActive(false);
         upgradeTowerBtn.SetActive(false);
+
+        if (ActiveMonsters.Count == 0 && !spawning)
+        {
+            waveBtn.SetActive(true);
+        }
     }
 
     public void SellTower()
