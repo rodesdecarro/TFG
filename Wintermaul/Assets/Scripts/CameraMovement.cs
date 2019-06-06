@@ -91,8 +91,8 @@ public class CameraMovement : MonoBehaviour
 
         float difMinX = (Camera.main.ViewportToWorldPoint(new Vector3(0, 1)).x - minTile.x) + 0.2f;
         float difMinY = (Camera.main.ViewportToWorldPoint(new Vector3(0, 1)).y - minTile.y) - 0.2f;
-        float difMaxX = (Camera.main.ViewportToWorldPoint(new Vector3(1, 0)).x - maxTile.x) - 2;
-        float difMaxY = (Camera.main.ViewportToWorldPoint(new Vector3(1, 0)).y - maxTile.y) + 2;
+        float difMaxX = (Camera.main.ViewportToWorldPoint(new Vector3(1, 0)).x - maxTile.x) - 1;
+        float difMaxY = (Camera.main.ViewportToWorldPoint(new Vector3(1, 0)).y - maxTile.y) + 1;
 
         if (difMinX < 0)
         {
