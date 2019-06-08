@@ -79,7 +79,13 @@ public class GameManager : Singleton<GameManager>
     private Text gameOverTxt = null;
 
     [SerializeField]
-    private Button[] speedButtons;
+    private Button[] speedButtons = null;
+
+    [SerializeField]
+    private Slider musicSlider = null;
+
+    [SerializeField]
+    private Slider sfxSlider = null;
 
     private Tower selectedTower;
 
@@ -167,6 +173,12 @@ public class GameManager : Singleton<GameManager>
     // Start is called before the first frame update
     void Start()
     {
+        // Update background music and slider instances
+        SoundManager.Instance.SetBackgroundMusic("Game");
+        SoundManager.Instance.SfxSlider = sfxSlider;
+        SoundManager.Instance.MusicSlider = musicSlider;
+        SoundManager.Instance.LoadVolume();
+
         SpeedModifier = 1;
         Gold = initialGold;
         Lifes = initialLifes;
@@ -401,7 +413,7 @@ public class GameManager : Singleton<GameManager>
                 // Update the Game Over text
                 gameOverTxt.text = "You win!";
             }
-            else if (selectedTower == null)
+            else
             {
                 waveBtn.SetActive(true);
             }
@@ -434,8 +446,6 @@ public class GameManager : Singleton<GameManager>
             upgradeTowerBtn.SetActive(true);
             upgradeTowerBtn.GetComponent<UpgradeTowerBtn>().Price = selectedTower.Upgrade.Price - selectedTower.Price / 2;
         }
-
-        waveBtn.SetActive(false);
     }
 
     private void UnselectTower()
@@ -448,11 +458,6 @@ public class GameManager : Singleton<GameManager>
 
         sellTowerBtn.SetActive(false);
         upgradeTowerBtn.SetActive(false);
-
-        if (ActiveMonsters.Count == 0 && !spawning)
-        {
-            waveBtn.SetActive(true);
-        }
     }
 
     public void SellTower()
@@ -506,5 +511,10 @@ public class GameManager : Singleton<GameManager>
     {
         statsTxt.text = text;
         sizeTxt.text = text;
+    }
+
+    public void PlaySfx(string name)
+    {
+        SoundManager.Instance.PlaySfx(name);
     }
 }

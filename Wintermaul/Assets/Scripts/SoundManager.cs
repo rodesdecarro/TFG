@@ -7,22 +7,36 @@ using UnityEngine.UI;
 public class SoundManager : Singleton<SoundManager>
 {
     [SerializeField]
-    private AudioSource musicSource;
+    private AudioSource musicSource = null;
 
     [SerializeField]
-    private AudioSource sfxSource;
+    private AudioSource sfxSource = null;
 
     [SerializeField]
-    private Slider musicSlider;
+    private Slider musicSlider = null;
 
     [SerializeField]
-    private Slider sfxSlider;
+    private Slider sfxSlider = null;
+
+    public Slider MusicSlider
+    {
+        private get { return musicSlider; }
+        set { musicSlider = value; }
+    }
+
+    public Slider SfxSlider
+    {
+        private get { return sfxSlider; }
+        set { sfxSlider = value; }
+    }
 
     private Dictionary<string, AudioClip> audioClips = new Dictionary<string, AudioClip>();
 
     // Start is called before the first frame update 
     void Start()
     {
+        DontDestroyOnLoad(this.gameObject);
+
         AudioClip[] clips = Resources.LoadAll<AudioClip>("Audio");
 
         foreach (AudioClip audioClip in clips)
@@ -31,9 +45,6 @@ public class SoundManager : Singleton<SoundManager>
         }
 
         LoadVolume();
-
-        musicSlider.onValueChanged.AddListener(delegate { UpdateVolume(); });
-        sfxSlider.onValueChanged.AddListener(delegate { UpdateVolume(); PlaySfx("Button"); });
     }
 
     // Update is called once per frame
@@ -56,13 +67,16 @@ public class SoundManager : Singleton<SoundManager>
         PlayerPrefs.SetFloat("SFX", sfxSlider.value);
     }
 
-    private void LoadVolume()
+    public void LoadVolume()
     {
         musicSource.volume = PlayerPrefs.GetFloat("music", 0.5f);
         sfxSource.volume = PlayerPrefs.GetFloat("SFX", 0.5f);
 
         musicSlider.value = musicSource.volume;
         sfxSlider.value = sfxSource.volume;
+
+        musicSlider.onValueChanged.AddListener(delegate { UpdateVolume(); });
+        sfxSlider.onValueChanged.AddListener(delegate { UpdateVolume(); PlaySfx("Button"); });
     }
 
     public void SetBackgroundMusic(string name)

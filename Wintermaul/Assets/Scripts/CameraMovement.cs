@@ -18,12 +18,12 @@ public class CameraMovement : MonoBehaviour
     private float MouseStartX;
     private float MouseMoveX;
 
-    private Camera camera;
+    private Camera mainCamera;
 
     // Start is called before the first frame update
     void Start()
     {
-        camera = transform.GetComponent<Camera>();
+        mainCamera = transform.GetComponent<Camera>();
     }
 
     // Update is called once per frame
@@ -36,11 +36,11 @@ public class CameraMovement : MonoBehaviour
     {
         if (Input.GetAxis("Mouse ScrollWheel") < 0)
         {
-            camera.orthographicSize = Mathf.Min(camera.orthographicSize + 1, 12);
+            mainCamera.orthographicSize = Mathf.Min(mainCamera.orthographicSize + 1, 12);
         }
         else if (Input.GetAxis("Mouse ScrollWheel") > 0)
         {
-            camera.orthographicSize = Mathf.Max(5, camera.orthographicSize - 1);
+            mainCamera.orthographicSize = Mathf.Max(5, mainCamera.orthographicSize - 1);
         }
 
         float newX = 0;
@@ -84,16 +84,34 @@ public class CameraMovement : MonoBehaviour
             newX -= MouseMoveX * dragSpeed * Time.deltaTime;
         }
 
+
+        // Check if the new position is outside the boundaries
+        float difMinX = Camera.main.ViewportToWorldPoint(new Vector3(0f, 1f)).x - minTile.x + 0.2f + newX;
+        float difMinY = Camera.main.ViewportToWorldPoint(new Vector3(0f, 1f)).y - minTile.y - 1.5f + newY;
+        float difMaxX = Camera.main.ViewportToWorldPoint(new Vector3(1f, 0f)).x - maxTile.x - 1.5f + newX;
+        float difMaxY = Camera.main.ViewportToWorldPoint(new Vector3(1f, 0f)).y - maxTile.y + 0.2f + newY;
+
+        if (difMinX < 0 || difMaxX > 0 && Mathf.Abs(difMinX) > 0.001)
+        {
+            difMinX -= newX;
+            difMaxX -= newX;
+            newX = 0;
+        }
+
+        if (difMinY > 0 || difMaxY < 0 && Mathf.Abs(difMinY) > 0.001)
+        {
+            difMinY -= newY;
+            difMaxY -= newY;
+            newY = 0;
+        }
+
         if (newX != 0 || newY != 0)
         {
+            // Move the camera
             transform.Translate(new Vector3(newX, newY));
         }
 
-        float difMinX = (Camera.main.ViewportToWorldPoint(new Vector3(0, 1)).x - minTile.x) + 0.2f;
-        float difMinY = (Camera.main.ViewportToWorldPoint(new Vector3(0, 1)).y - minTile.y) - 0.2f;
-        float difMaxX = (Camera.main.ViewportToWorldPoint(new Vector3(1, 0)).x - maxTile.x) - 1;
-        float difMaxY = (Camera.main.ViewportToWorldPoint(new Vector3(1, 0)).y - maxTile.y) + 1;
-
+        // If camera still outside the boudaries...
         if (difMinX < 0)
         {
             transform.Translate(Vector3.left * difMinX);
