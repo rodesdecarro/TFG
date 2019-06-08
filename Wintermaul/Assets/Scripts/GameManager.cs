@@ -311,7 +311,7 @@ public class GameManager : Singleton<GameManager>
         cheatsMenu.SetActive(true);
     }
 
-    public void GameOver()
+    private void GameOver()
     {
         DropTower();
         Time.timeScale = 0;
@@ -319,7 +319,7 @@ public class GameManager : Singleton<GameManager>
         isGameOver = true;
     }
 
-    public void ShowGameOver()
+    private void ShowGameOver()
     {
         inGameMenu.SetActive(true);
         pauseMenu.SetActive(false);
